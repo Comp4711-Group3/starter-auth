@@ -49,7 +49,6 @@ class Application extends CI_Controller {
 		// get role and name from session
 		// make array, with menu choice for alpha
 		$choices = array();
-
 		$choices[] = array('name' => "Alpha", 'link' => '/alpha');
 		// if not logged in , add menu choice to login
 		if (!isset($this->session->userdata['userName']) || !isset($this->session->userdata['userRole'])){
