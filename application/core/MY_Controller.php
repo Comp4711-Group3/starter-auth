@@ -46,13 +46,27 @@ class Application extends CI_Controller {
 	// build menu choices depending on the user role
 	function makemenu()
 	{
+		// get role and name from session
+		// make array, with menu choice for alpha
 		$choices = array();
 
 		$choices[] = array('name' => "Alpha", 'link' => '/alpha');
-		$choices[] = array('name' => "Beta", 'link' => '/beta');
-		$choices[] = array('name' => "Gamma", 'link' => '/gamma');
-		$choices[] = array('name' => 'Login', 'link' => '/auth');
-		$choices[] = array('name' => 'Logout', 'link' => '/auth/logout');
+		// if not logged in , add menu choice to login
+		if (!isset($this->session->userdata['userName']) || !isset($this->session->userdata['userRole'])){
+			$choices[] = array('name' => 'Login', 'link' => '/auth');
+		}
+		// if user, add menu choice for beta and logout
+		else if ($this->session->userdata['userRole'] == "user"){
+			$choices[] = array('name' => "Beta", 'link' => '/beta');
+			$choices[] = array('name' => 'Logout', 'link' => '/auth/logout');
+		}
+		// if admin add menu choices for beta, gamma and logout
+		else if ($this->session->userdata['userRole'] == "admin"){
+			$choices[] = array('name' => "Beta", 'link' => '/beta');
+			$choices[] = array('name' => "Gamma", 'link' => '/gamma');
+			$choices[] = array('name' => 'Logout', 'link' => '/auth/logout');
+		}
+		// return the choices array
 		return $choices;
 	}
 	function restrict($roleNeeded = null){
